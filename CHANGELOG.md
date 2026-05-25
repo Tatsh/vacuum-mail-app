@@ -9,6 +9,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.0.1] - 2026-05-25
+
 ### Changed
 
 - Rewrote the original CoffeeScript implementation in TypeScript.
@@ -16,4 +18,5 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Switched the build to webpack with `ts-loader` and `webpack-shebang-plugin`.
 - Added Vitest unit tests that mock `jxa-lib` and the JXA globals (`$`, `ObjC`, `Application`).
 
-[unreleased]: https://github.com/Tatsh/vacuum-mail-app/compare/v0.0.0...HEAD
+[unreleased]: https://github.com/Tatsh/vacuum-mail-app/compare/v0.0.1...HEAD
+[0.0.1]: https://github.com/Tatsh/vacuum-mail-app/compare/v0.0.0...v0.0.1

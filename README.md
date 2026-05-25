@@ -6,7 +6,7 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/vacuum-mail-app)](https://www.npmjs.com/package/vacuum-mail-app)
 [![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Tatsh/vacuum-mail-app)](https://github.com/Tatsh/vacuum-mail-app/tags)
 [![License](https://img.shields.io/github/license/Tatsh/vacuum-mail-app)](https://github.com/Tatsh/vacuum-mail-app/blob/master/LICENSE.txt)
-[![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/vacuum-mail-app/v0.0.0/master)](https://github.com/Tatsh/vacuum-mail-app/compare/v0.0.0...master)
+[![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/vacuum-mail-app/v0.0.1/master)](https://github.com/Tatsh/vacuum-mail-app/compare/v0.0.1...master)
 [![CodeQL](https://github.com/Tatsh/vacuum-mail-app/actions/workflows/codeql.yml/badge.svg)](https://github.com/Tatsh/vacuum-mail-app/actions/workflows/codeql.yml)
 [![QA](https://github.com/Tatsh/vacuum-mail-app/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/vacuum-mail-app/actions/workflows/qa.yml)
 [![Tests](https://github.com/Tatsh/vacuum-mail-app/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/vacuum-mail-app/actions/workflows/tests.yml)
