@@ -1,0 +1,30 @@
+.TH VACUUM-MAIL-APP 1 "May 2026" "vacuum-mail-app 0.0.1" "User Commands"
+.SH NAME
+vacuum-mail-app \- vacuum the Mail.app Envelope Index SQLite database
+.SH SYNOPSIS
+.B vacuum-mail-app
+.SH DESCRIPTION
+.B vacuum-mail-app
+quits Mail.app if it is running, runs
+.B sqlite3 vacuum
+against the Envelope Index database stored under
+.IR ~/Library/Mail/<version>/MailData/ ,
+prints the byte counts before and after along with the percentage change, and then reopens Mail.
+.SH OPTIONS
+This utility does not accept any command-line options.
+.SH EXIT STATUS
+.TP
+0
+The database was vacuumed successfully.
+.TP
+1
+An error occurred (for example, sw_vers or sqlite3 failed, or the Envelope Index file was not
+found).
+.SH AUTHOR
+Written by the vacuum-mail-app contributors.
+.SH COPYRIGHT
+Copyright \(co 2026 vacuum-mail-app contributors.
+Licensed under the MIT License.
+.SH SEE ALSO
+.BR osascript (1),
+.BR sqlite3 (1)
