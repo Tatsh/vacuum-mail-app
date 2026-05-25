@@ -36,5 +36,6 @@
     "target": "es2018",
     "types": ["jxa-types", "node"]
   },
+  "exclude": ["src/**/*.test.ts"],
   "include": ["src"]
 }

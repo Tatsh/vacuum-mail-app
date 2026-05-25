@@ -6,7 +6,7 @@ local utils = import 'utils.libjsonnet';
   keep_dist: true,
   want_man: true,
   project_name: 'vacuum-mail-app',
-  version: '0.0.1',
+  version: '0.0.0',
   description: 'Utility to vacuum the Mail.app Envelope Index SQLite database.',
   keywords: ['applescript', 'jxa', 'macos', 'mail', 'sqlite', 'typescript', 'vacuum'],
   // TypeScript only
@@ -53,6 +53,7 @@ local utils = import 'utils.libjsonnet';
       target: 'es2018',
       types: ['jxa-types', 'node'],
     },
+    exclude: ['src/**/*.test.ts'],
     include: ['src'],
   },
 }

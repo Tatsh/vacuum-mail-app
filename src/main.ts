@@ -3,67 +3,34 @@ import { FileManager, stdlib } from 'jxa-lib';
 ObjC.import('Foundation');
 ObjC.import('stdlib');
 
-export interface CommandResult {
-  status: number;
-  stdout: string;
-  stderr: string;
-}
+const MAIL_DATA_VERSIONS = ['V11', 'V10', 'V9', 'V8', 'V7', 'V6', 'V5', 'V4', 'V3', 'V2'] as const;
 
-/** Run an executable synchronously and capture its standard streams. */
-export function getOutput(launchPath: string, args: string[], trim = false): CommandResult {
-  const outPipe = $.NSPipe.pipe;
-  const errPipe = $.NSPipe.pipe;
-  const task = $.NSTask.alloc.init;
-  task.launchPath = launchPath;
-  task.arguments = args;
-  task.standardOutput = outPipe;
-  task.standardError = errPipe;
-  task.launch;
-  task.waitUntilExit;
-  const decode = (pipe: NSPipe): string => {
-    const data = pipe.fileHandleForReading.readDataToEndOfFile;
-    const value = ObjC.unwrap(
-      $.NSString.alloc.initWithDataEncoding(data, $.NSUTF8StringEncoding),
-    ) as string;
-    pipe.fileHandleForReading.closeFile;
-    return trim ? value.trim() : value;
-  };
-  return {
-    status: task.terminationStatus,
-    stdout: decode(outPipe),
-    stderr: decode(errPipe),
-  };
-}
-
-/** Returns `true` when `b < a` using AppleScript numeric string comparison. */
-export function versionIsLower(a: string, b: string): boolean {
-  return ObjC.wrap(a).compareOptions(b, $.NSNumericSearch) === $.NSOrderedDescending;
-}
-
-/** Resolve the path to Mail's `Envelope Index` SQLite database. */
+/** Resolve the path to Mail's `Envelope Index` SQLite database by probing the per-version
+ * `~/Library/Mail/V<n>/MailData/` folders for the file rather than version-sniffing macOS. */
 export function getEnvelopeIndexPath(fm: FileManager = new FileManager()): string {
-  const { status, stdout } = getOutput('/usr/bin/sw_vers', ['-productVersion'], true);
-  if (status !== 0) {
-    throw new Error('sw_vers command failed');
-  }
-  let mailVersion = 'V2';
-  if (versionIsLower(stdout, '10.10')) mailVersion = 'V3';
-  if (versionIsLower(stdout, '10.13')) mailVersion = 'V5';
   const home = ObjC.unwrap(stdlib.getenv('HOME')) as string;
-  const mailDataPath = `${home}/Library/Mail/${mailVersion}/MailData`;
-  for (const fn of fm.contentsOfDirectory(mailDataPath)) {
-    if (/Envelope Index$/.test(fn)) {
-      return `${mailDataPath}/${fn}`;
+  for (const version of MAIL_DATA_VERSIONS) {
+    const dir = `${home}/Library/Mail/${version}/MailData`;
+    if (!fm.fileExists(dir)) continue;
+    for (const fn of fm.contentsOfDirectory(dir)) {
+      if (/Envelope Index$/.test(fn)) {
+        return `${dir}/${fn}`;
+      }
     }
   }
-  throw new Error('Failed to find file matching /Envelope Index$/');
+  throw new Error('Failed to find an Envelope Index file under ~/Library/Mail/V*/MailData');
 }
 
 /** Vacuum Mail's envelope index and return `[bytesBefore, bytesAfter]`. */
 export function vacuumIndex(fm: FileManager = new FileManager()): [number, number] {
   const path = getEnvelopeIndexPath(fm);
   const sizeBefore = fm.attributesOfItem(path).NSFileSize as number;
-  const task = $.NSTask.launchedTaskWithLaunchPathArguments('/usr/bin/sqlite3', [path, 'vacuum']);
+  const task = $.NSTask.launchedTaskWithExecutableURLArgumentsErrorTerminationHandler(
+    $.NSURL.URLWithString('file:///usr/bin/sqlite3'),
+    [path, 'vacuum'] as unknown as JXArray<string>,
+    null,
+    () => {},
+  );
   task.waitUntilExit;
   if (task.terminationStatus !== 0) {
     throw new Error('Failed to vacuum; sqlite3 command failed');
@@ -85,7 +52,7 @@ export function formatChange(sizeBefore: number, sizeAfter: number): string {
 export default function main(): number {
   const mail = Application('Mail');
   if (mail.running()) {
-    getOutput('/usr/bin/killall', ['Mail']);
+    mail.quit('no');
   }
   let sizes: [number, number];
   try {

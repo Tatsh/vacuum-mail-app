@@ -16,9 +16,4 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Switched the build to webpack with `ts-loader` and `webpack-shebang-plugin`.
 - Added Vitest unit tests that mock `jxa-lib` and the JXA globals (`$`, `ObjC`, `Application`).
 
-## [0.0.1]
-
-First version.
-
-[unreleased]: https://github.com/Tatsh/vacuum-mail-app/compare/v0.0.1...HEAD
-[0.0.1]: https://github.com/Tatsh/vacuum-mail-app/releases/tag/v0.0.1
+[unreleased]: https://github.com/Tatsh/vacuum-mail-app/compare/v0.0.0...HEAD
