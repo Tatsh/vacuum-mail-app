@@ -29,6 +29,7 @@ pylock
 pyproject
 regen
 ripgreprc
+sbclaude
 schemafile
 shellcheck
 shellformat
